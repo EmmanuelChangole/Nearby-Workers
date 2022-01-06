@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "38027246905",
+    "firebase_url": "https://kotlin-login-8e3f9-default-rtdb.firebaseio.com",
+    "project_id": "kotlin-login-8e3f9",
+    "storage_bucket": "kotlin-login-8e3f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38027246905:android:fb39eb75467082f7467ce8",
+        "android_client_info": {
+          "package_name": "com.example.chatnearby"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38027246905-e6stids9f04849gqgcvsaofhkeb60r5o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6miSnHHaNNzNWBKlxs3e5uul215Xdqeg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38027246905-e6stids9f04849gqgcvsaofhkeb60r5o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38027246905:android:aef78544c1312db6467ce8",
+        "android_client_info": {
+          "package_name": "com.example.nearbyworkers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38027246905-e6stids9f04849gqgcvsaofhkeb60r5o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6miSnHHaNNzNWBKlxs3e5uul215Xdqeg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38027246905-e6stids9f04849gqgcvsaofhkeb60r5o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

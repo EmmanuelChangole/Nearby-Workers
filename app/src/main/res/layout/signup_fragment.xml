@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_200"
+        tools:context=".ui.register.RegisterActivity">
+
+        <EditText
+            android:layout_centerInParent="true"
+            android:id="@+id/name_edittext_register"
+            android:layout_centerHorizontal="true"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/rounded_edittext_register_login"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:paddingLeft="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+          />
+
+        <EditText
+            android:id="@+id/email_edittext_register"
+            android:layout_below="@id/name_edittext_register"
+            android:layout_centerHorizontal="true"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edittext_register_login"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/name_edittext_register"
+            app:layout_constraintStart_toStartOf="@+id/name_edittext_register"
+            app:layout_constraintTop_toBottomOf="@+id/name_edittext_register"/>
+
+        <EditText
+            android:id="@+id/password_edittext_register"
+            android:layout_below="@id/email_edittext_register"
+            android:layout_centerHorizontal="true"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edittext_register_login"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingLeft="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/email_edittext_register"
+            app:layout_constraintStart_toStartOf="@+id/email_edittext_register"
+            app:layout_constraintTop_toBottomOf="@+id/email_edittext_register"/>
+        <EditText
+            android:id="@+id/confirm_password_edittext_register"
+            android:layout_below="@id/password_edittext_register"
+            android:layout_centerHorizontal="true"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edittext_register_login"
+            android:ems="10"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:paddingLeft="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/email_edittext_register"
+            app:layout_constraintStart_toStartOf="@+id/email_edittext_register"
+            app:layout_constraintTop_toBottomOf="@+id/email_edittext_register"/>
+
+        <Button
+            android:id="@+id/register_button_register"
+            android:layout_below="@id/confirm_password_edittext_register"
+            android:layout_centerHorizontal="true"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_button"
+            android:text="REGISTER"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/password_edittext_register"
+            app:layout_constraintStart_toStartOf="@+id/password_edittext_register"
+            app:layout_constraintTop_toBottomOf="@+id/password_edittext_register"/>
+
+
+        <TextView
+            android:id="@+id/already_have_account_text_view"
+            android:layout_below="@id/register_button_register"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:text="Already have an account?"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/register_button_register"
+            app:layout_constraintStart_toStartOf="@+id/register_button_register"
+            app:layout_constraintTop_toBottomOf="@+id/register_button_register"/>
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_below="@id/already_have_account_text_view"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/loading_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            app:indicatorColor="@color/colorAccent"
+            app:indicatorName="SemiCircleSpinIndicator"
+            app:layout_constraintEnd_toEndOf="@+id/register_button_register"
+            app:layout_constraintStart_toStartOf="@+id/register_button_register"
+            app:layout_constraintTop_toBottomOf="@+id/register_button_register"/>
+
+
+    </RelativeLayout>
+</ScrollView>
