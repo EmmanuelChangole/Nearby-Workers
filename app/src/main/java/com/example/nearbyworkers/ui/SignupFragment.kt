@@ -93,8 +93,9 @@ class SignupFragment : Fragment() {
            {
                progress.visibility=View.GONE
                Log.d(TAG, "createUserWithEmail:success")
-               var intent=Intent(context,MainActivity::class.java)
+               var intent=Intent(context,DetailsActivity::class.java)
                intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TOP
+               intent.putExtra("username",username.toString())
                intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TASK
                startActivity(intent)
                requireActivity().finish()
