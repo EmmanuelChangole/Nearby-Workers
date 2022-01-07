@@ -70,5 +70,8 @@ dependencies {
 
     // gps
     implementation "com.google.android.gms:play-services-location:16.0.0"
+    //segmented button
+    implementation "com.github.addisonelliott:SegmentedButton:3.1.5"
+
 }
 apply plugin: 'com.google.gms.google-services'

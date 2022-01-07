@@ -10,8 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NearbyWorkers">
         <activity
+            android:name=".ui.WorkerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ClientActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.DetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.LoginActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
