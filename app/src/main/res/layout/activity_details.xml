@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="40dp"
+    android:id="@+id/layout">
+
+
+    <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
+        android:layout_marginTop="30sp"
+        android:id="@+id/radioRealButtonGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:elevation="2dp"
+        android:background="@color/colorPrimaryDark"
+        app:borderColor="@color/white"
+        app:borderWidth="1dp"
+        app:divider="@color/white"
+        app:dividerPadding="10dp"
+        app:dividerWidth="1dp"
+        app:position="0"
+        app:radius="30dp"
+        app:ripple="true"
+        app:rippleColor="@color/colorAccent"
+        app:selectedBackground="@color/colorAccent">
+
+        <com.addisonelliott.segmentedbutton.SegmentedButton
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            app:drawableWidth="48dp"
+            app:drawableHeight="48dp"
+            app:drawable="@drawable/ic_client"
+            app:drawableGravity="top"
+            app:text="@string/client"
+            app:textColor="@color/white" />
+
+        <com.addisonelliott.segmentedbutton.SegmentedButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            app:drawableWidth="48dp"
+            app:drawableHeight="48dp"
+            app:drawable="@drawable/ic_worker"
+            app:drawableGravity="top"
+            app:text="@string/worker"
+            app:textColor="@color/white" />
+    </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/loading_view"
+        android:layout_below="@id/back_to_register_textview"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        app:indicatorColor="@color/colorAccent"
+        app:indicatorName="SemiCircleSpinIndicator"
+        />
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:background="@color/colorAccent"
+        android:text="@string/save"
+        android:id="@+id/register"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>
