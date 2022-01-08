@@ -42,7 +42,7 @@
         android:id="@+id/tvAcess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Availability"
+        android:text="Unavailable"
         android:textSize="16sp"
         android:layout_below="@id/workerToolbar"
         android:layout_alignParentRight="true"
@@ -50,9 +50,10 @@
         android:layout_marginTop="10dp"
         />
 
-     <SeekBar
-         android:id="@+id/seekBar"
-         android:layout_width="70dp"
+
+     <Switch
+         android:id="@+id/switchBar"
+         android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_below="@id/tvAcess"
          android:layout_alignParentRight="true"
