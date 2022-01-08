@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+ <TextView
+     android:id="@+id/tvCategory"
+     android:layout_marginTop="10dp"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:text="Work category"
+     android:layout_centerHorizontal="true"
+     />
+  <Spinner
+     android:id="@+id/workSpinner"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_below="@id/tvCategory"
+     android:layout_centerHorizontal="true"
+     />
+
+  <TextView
+      android:layout_below="@id/workSpinner"
+      android:id="@+id/tvDescription"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:text="Work description"
+      />
+ <EditText
+     android:layout_marginRight="10dp"
+     android:layout_marginLeft="10dp"
+     android:layout_marginTop="10dp"
+     android:padding="10dp"
+     android:layout_below="@id/tvDescription"
+     android:id="@+id/textArea_information"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:gravity="top|left"
+     android:background="@drawable/edit_text_background"
+     android:inputType="textMultiLine"
+     android:overScrollMode="always"
+     android:scrollbarStyle="insideInset"
+     android:scrollbars="vertical"
+     android:lines="6"
+     android:textAppearance="?android:attr/textAppearanceMedium"
+     android:scrollHorizontally="false" />
+    <com.wang.avi.AVLoadingIndicatorView
+        android:layout_below="@id/textArea_information"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/loading_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        app:indicatorColor="@color/colorAccent"
+        android:visibility="gone"
+      />
+
+
+   <Button
+       android:layout_marginTop="10dp"
+       android:id="@+id/butDone"
+       android:layout_centerHorizontal="true"
+       android:layout_below="@id/loading_view"
+       android:layout_width="300dp"
+       android:layout_height="wrap_content"
+       android:text="Done"
+       android:background="@drawable/rounded_button"
+       />
+
+
+
+
+</RelativeLayout>
