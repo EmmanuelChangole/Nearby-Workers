@@ -72,6 +72,8 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:16.0.0"
     //segmented button
     implementation "com.github.addisonelliott:SegmentedButton:3.1.5"
+    //Bottom scheet
+    implementation "com.afollestad.material-dialogs:bottomsheets:$bottom_sheet"
 
 }
 apply plugin: 'com.google.gms.google-services'

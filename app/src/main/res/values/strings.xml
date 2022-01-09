@@ -3,4 +3,11 @@
     <string name="client">Client</string>
     <string name="worker">Worker</string>
     <string name="save">Save</string>
+    <string name="workAdd">Add</string>
+    <string-array name="workCategories">
+        <item>Construction and repair</item>
+        <item>Laundry</item>
+        <item>Technician</item>
+        <item>Plumbers</item>
+    </string-array>
 </resources>
