@@ -42,6 +42,9 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun initObject(username:String)
     {
+        val preferences = getSharedPreferences("work", 0)
+        preferences.edit().remove("work").commit();
+
         val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         val myEdit: SharedPreferences.Editor = sh.edit()
 
@@ -73,7 +76,7 @@ class DetailsActivity : AppCompatActivity() {
 
 
 
-            FirebaseDatabase.getInstance().getReference().child("users").child(userId).
+            FirebaseDatabase.getInstance().getReference().child("users").child(accountType).child(userId).
             updateChildren(newUserMap).addOnCompleteListener{
               if(it.isSuccessful)
               {
@@ -83,15 +86,12 @@ class DetailsActivity : AppCompatActivity() {
                                   startActivity(intent)
                                   finish()
                               }
-                              else
-                              {
-                                  var intent= Intent(this,ClientActivity::class.java)
+                              else {
+                                  var intent = Intent(this, ClientActivity::class.java)
                                   startActivity(intent)
                                   finish()
 
                               }
-
-
 
                       }
              else

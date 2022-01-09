@@ -6,6 +6,9 @@ data class Worker (
     var category:String="",
     var description:String="",
     var profileImageUrl: String = "",
-    var username:String=""
+    var username:String="",
+    var lat:Double=0.0,
+    var lon:Double=0.0,
+    var access:Boolean=false
 
-        )
+)
