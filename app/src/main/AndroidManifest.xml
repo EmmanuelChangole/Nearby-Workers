@@ -21,7 +21,9 @@
             />
         <activity
             android:name=".ui.ClientActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
         <activity
             android:name=".ui.DetailsActivity"
             android:exported="false" />
