@@ -5,6 +5,10 @@ buildscript {
         mavenCentral()
         maven { url "https://jitpack.io" }
     }
+
+    ext {
+        bottom_sheet="3.2.1"
+    }
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.4"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0"
