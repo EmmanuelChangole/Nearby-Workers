@@ -2,6 +2,7 @@ package com.example.nearbyworkers.model
 
 data class User
     (
+    var uid:String="",
     var username: String? = "",
     var profileImageUrl:String="",
     var account:String="",
