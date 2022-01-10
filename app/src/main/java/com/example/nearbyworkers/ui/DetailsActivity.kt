@@ -67,6 +67,7 @@ class DetailsActivity : AppCompatActivity() {
           progress.visibility=View.VISIBLE
           var userId=FirebaseAuth.getInstance().currentUser!!.uid
           val newUserMap= mutableMapOf<String,Any>()
+          newUserMap.put("uid",userId)
           newUserMap.put("username",username)
           newUserMap.put("profileImageUrl", "default")
           newUserMap.put("account",accountType)
