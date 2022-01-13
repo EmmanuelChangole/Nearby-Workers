@@ -1,5 +1,6 @@
 package com.example.nearbyworkers.ui
 
+import android.annotation.SuppressLint
 import android.app.ActionBar
 import android.app.Activity
 import android.app.Dialog
@@ -27,10 +28,7 @@ import com.example.nearbyworkers.model.User
 import com.example.nearbyworkers.model.Worker
 import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -47,6 +45,8 @@ class LocationFragment : Fragment() {
     private var locationUpdateState = false
     private lateinit var swiperefresh:SwipeRefreshLayout
     private lateinit var recyclerView:RecyclerView
+    private lateinit var mRef1:DatabaseReference
+    private lateinit var mRef2:DatabaseReference
     var currentUser: User? = null
 
 
@@ -90,6 +90,7 @@ class LocationFragment : Fragment() {
             }
         }
         startLocationUpdates()
+        initFirebase()
 
 
     }
@@ -99,11 +100,40 @@ class LocationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
          swiperefresh=binding.swiperefresh
          recyclerView=binding.recyclerviewNewmessage
+
+
          swiperefresh.setOnRefreshListener {
             fetchUsers()
          }
 
 
+
+
+    }
+
+    private fun initFirebase()
+    {
+        val uid = FirebaseAuth.getInstance().uid ?: return
+        mRef1 = FirebaseDatabase.getInstance().getReference("users").child("worker")
+        mRef1.keepSynced(true)
+        mRef2 = FirebaseDatabase.getInstance().getReference("users").child("client").child(uid)
+        mRef2.keepSynced(true)
+        val eventListener: ValueEventListener =object : ValueEventListener
+        {
+            @SuppressLint("RestrictedApi")
+            override fun onDataChange(snapshot: DataSnapshot)
+            {
+                if (snapshot.exists())
+                {
+                    currentUser = snapshot.getValue(User::class.java)
+
+
+                }}
+            override fun onCancelled(error: DatabaseError) {
+            }
+        }
+
+        mRef2.addListenerForSingleValueEvent(eventListener)
 
 
     }
@@ -176,18 +206,6 @@ class LocationFragment : Fragment() {
 
     fun fetchUsers() {
         swiperefresh.isRefreshing = true
-        val uid = FirebaseAuth.getInstance().uid ?: return
-        val ref = FirebaseDatabase.getInstance().getReference("users").child("worker")
-        val ref2 = FirebaseDatabase.getInstance().getReference("users").child("client").child(uid.toString())
-        ref2.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                currentUser = dataSnapshot.getValue(User::class.java)
-            }
-
-        })
         var myLon = 0.0
         var myLat = 0.0
         if (currentUser != null) {
@@ -195,7 +213,7 @@ class LocationFragment : Fragment() {
             myLat = currentUser!!.lat
         }
 
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+        mRef1.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
 
             }
@@ -211,7 +229,8 @@ class LocationFragment : Fragment() {
                             if(it.access!=false)
                             {
                                 var dis=getDistances(myLat,myLon,it.lat,it.lon)
-                                Toast.makeText(requireActivity(),"${dis}", Toast.LENGTH_LONG).show()
+                               // Toast.makeText(requireActivity(),"${dis}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(requireActivity(),myLat.toString() + myLon.toString(), Toast.LENGTH_LONG).show()
                                 //  adapter.add(UserItem(it, this@GetLocationActivity))
                                 //here compare the distance, load the user in range
                                 if (dis < 5.0) {
@@ -239,9 +258,10 @@ class LocationFragment : Fragment() {
                             }
                             override fun onDataChange(p0: DataSnapshot) {
                                 users = p0.value as? ArrayList<String>
-                                var user = (item as? UserItem)?.worker!!.username
+                                var user = (item as? UserItem)?.worker!!.uid
+                                Toast.makeText(requireContext(),user.toString(),Toast.LENGTH_LONG).show()
                                 // in case duplicate adding
-                                if (users!!.contains(user)){
+                              /*  if (users!!.contains(user)){
                                     Toast.makeText(requireActivity(),"Already in your contacts",
                                         Toast.LENGTH_SHORT).show()
                                 }
@@ -249,7 +269,7 @@ class LocationFragment : Fragment() {
                                     users!!.add(user)
                                     Toast.makeText(requireActivity(),"Add successful", Toast.LENGTH_SHORT).show()
                                 }
-                                contacts.setValue(users)
+                                contacts.setValue(users)*/
                             }
                         })
                     }
