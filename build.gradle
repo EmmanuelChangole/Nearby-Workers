@@ -8,6 +8,13 @@ buildscript {
 
     ext {
         bottom_sheet="3.2.1"
+        navigationVersion = "2.3.5"
+        archLifecycleVersion = '1.1.1'
+        kotlin_version='1.5.31'
+        coroutine_version = '1.3.7'
+        roomVersion = '2.4.0'
+        gradleVersion ='7.0.2'
+        dataBindingCompilerVersion = gradleVersion
     }
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.4"
