@@ -99,11 +99,6 @@ class LoginFragment : Fragment() {
             (activity as LoginActivity).setUpFragment(SignupFragment())
         }
 
-
-
-
-
-
     }
 
 }

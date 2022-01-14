@@ -23,6 +23,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.nearbyworkers.R
+import com.example.nearbyworkers.database.Contact
+import com.example.nearbyworkers.database.ContactDatabase
 import com.example.nearbyworkers.databinding.LocationFragmentBinding
 import com.example.nearbyworkers.model.User
 import com.example.nearbyworkers.model.Worker
@@ -47,9 +49,8 @@ class LocationFragment : Fragment() {
     private lateinit var recyclerView:RecyclerView
     private lateinit var mRef1:DatabaseReference
     private lateinit var mRef2:DatabaseReference
+    private lateinit var contactViewModel:ContactsViewModel
     var currentUser: User? = null
-
-
     private lateinit var binding: LocationFragmentBinding
 
     companion object {
@@ -100,15 +101,14 @@ class LocationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
          swiperefresh=binding.swiperefresh
          recyclerView=binding.recyclerviewNewmessage
-
+        val dataSource=ContactDatabase.getInstance(requireContext()).contactsDatabase
+        val application= requireNotNull(activity).application
+        val viewModelFactory=ContactsViewModelFactory(dataSource,application)
+        contactViewModel=ViewModelProvider(this,viewModelFactory).get(ContactsViewModel::class.java)
 
          swiperefresh.setOnRefreshListener {
             fetchUsers()
          }
-
-
-
-
     }
 
     private fun initFirebase()
@@ -250,7 +250,26 @@ class LocationFragment : Fragment() {
                     val window = dialog.window
                     window?.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
                     dialog.findViewById<Button>(R.id.yes).setOnClickListener {
-                        var users : ArrayList<String>? = ArrayList()
+
+                        Toast.makeText(requireContext(),item.toString(),Toast.LENGTH_LONG).show()
+                        return@setOnClickListener
+
+                        var worker=item as Worker
+                        val contact=Contact(uid =worker.uid, name = worker.username, description = worker.description)
+                       if(!contactViewModel.checkUser(contact))
+                       {
+                           contactViewModel.addContact(contact)
+                           Toast.makeText(requireContext(),"Worker added to contact",Toast.LENGTH_LONG).show()
+                       }
+                        else{
+                           Toast.makeText(requireContext(),"Failed to add worker",Toast.LENGTH_LONG).show()
+
+                        }
+
+
+
+
+                     /*   var users : ArrayList<String>? = ArrayList()
                         val dbRef = FirebaseDatabase.getInstance().getReference("users/${FirebaseAuth.getInstance().currentUser?.uid}")
                         val contacts = dbRef.child("contacts")
                         contacts.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -259,9 +278,14 @@ class LocationFragment : Fragment() {
                             override fun onDataChange(p0: DataSnapshot) {
                                 users = p0.value as? ArrayList<String>
                                 var user = (item as? UserItem)?.worker!!.uid
+                                val contact=Contact(us)
+
+
+
+
                                 Toast.makeText(requireContext(),user.toString(),Toast.LENGTH_LONG).show()
                                 // in case duplicate adding
-                              /*  if (users!!.contains(user)){
+                              *//*  if (users!!.contains(user)){
                                     Toast.makeText(requireActivity(),"Already in your contacts",
                                         Toast.LENGTH_SHORT).show()
                                 }
@@ -269,9 +293,9 @@ class LocationFragment : Fragment() {
                                     users!!.add(user)
                                     Toast.makeText(requireActivity(),"Add successful", Toast.LENGTH_SHORT).show()
                                 }
-                                contacts.setValue(users)*/
+                                contacts.setValue(users)*//*
                             }
-                        })
+                        })*/
                     }
                     dialog.show()
                     dialog.findViewById<Button>(R.id.cancel).setOnClickListener {
