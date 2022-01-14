@@ -42,5 +42,15 @@ class ContactsViewModel(
 
     }
 
+    fun checkUser(contact:Contact):Boolean
+    {
+        var check=false
+
+        subscribeOnBackground {
+            check=database.checkContact(contact.uid)
+        }
+        return check
+    }
+
 
 }
