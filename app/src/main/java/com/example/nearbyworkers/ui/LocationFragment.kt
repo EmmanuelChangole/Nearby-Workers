@@ -2,7 +2,6 @@ package com.example.nearbyworkers.ui
 
 import android.annotation.SuppressLint
 import android.app.ActionBar
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
@@ -14,10 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -31,13 +32,15 @@ import com.example.nearbyworkers.model.Worker
 import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.location_fragment.*
 import kotlinx.android.synthetic.main.user_row_new_message.view.*
 
-class LocationFragment : Fragment() {
+class LocationFragment : Fragment(),UserAdapter.ClickListener {
     private var permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION)
     private var REQUEST_CODE = 1001
     private lateinit var fusedLocationClient : FusedLocationProviderClient
@@ -52,6 +55,9 @@ class LocationFragment : Fragment() {
     private lateinit var contactViewModel:ContactsViewModel
     var currentUser: User? = null
     private lateinit var binding: LocationFragmentBinding
+    lateinit var itemListener:UserAdapter.ClickListener
+    private  var worker:ArrayList<Worker> = ArrayList()
+    private lateinit var userAdapter:UserAdapter
 
     companion object {
         fun newInstance() = LocationFragment()
@@ -90,6 +96,7 @@ class LocationFragment : Fragment() {
                 ref.child("lon").setValue(lastLocation.longitude)
             }
         }
+        userAdapter=UserAdapter(itemListener)
         startLocationUpdates()
         initFirebase()
 
@@ -105,7 +112,7 @@ class LocationFragment : Fragment() {
         val application= requireNotNull(activity).application
         val viewModelFactory=ContactsViewModelFactory(dataSource,application)
         contactViewModel=ViewModelProvider(this,viewModelFactory).get(ContactsViewModel::class.java)
-
+        itemListener=this
          swiperefresh.setOnRefreshListener {
             fetchUsers()
          }
@@ -220,6 +227,7 @@ class LocationFragment : Fragment() {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val adapter = GroupAdapter<ViewHolder>()
+
                 dataSnapshot.children.forEach {
                     Log.d(TAG, it.toString())
                     @Suppress("NestedLambdaShadowedImplicitParameter")
@@ -230,12 +238,13 @@ class LocationFragment : Fragment() {
                             {
                                 var dis=getDistances(myLat,myLon,it.lat,it.lon)
                                // Toast.makeText(requireActivity(),"${dis}", Toast.LENGTH_LONG).show()
-                                Toast.makeText(requireActivity(),myLat.toString() + myLon.toString(), Toast.LENGTH_LONG).show()
                                 //  adapter.add(UserItem(it, this@GetLocationActivity))
                                 //here compare the distance, load the user in range
-                                if (dis < 5.0) {
-                                    Toast.makeText(requireActivity(),it.toString(), Toast.LENGTH_LONG).show()
-                                    adapter.add(UserItem(it, requireActivity()))
+                                if (dis < 5.0)
+                                {
+                                 worker.clear()
+                                 worker.add(it)
+                                  //  adapter.add(UserItem(it, requireActivity()))
                                 }
                             }
 
@@ -244,14 +253,17 @@ class LocationFragment : Fragment() {
                     }
                 }
                 // use a dialog to add user to contact
+
                 adapter.setOnItemClickListener { item, _ ->
                     val dialog = Dialog(requireActivity(), R.style.dialog)
                     dialog.setContentView(R.layout.dialog_add_contact)
+                    item.getPosition(item)
                     val window = dialog.window
                     window?.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
                     dialog.findViewById<Button>(R.id.yes).setOnClickListener {
 
-                        Toast.makeText(requireContext(),item.toString(),Toast.LENGTH_LONG).show()
+
+
                         return@setOnClickListener
 
                         var worker=item as Worker
@@ -302,15 +314,46 @@ class LocationFragment : Fragment() {
                         dialog.dismiss()
                     }
                 }
+                userAdapter.submitList(worker)
                 recyclerView.layoutManager= LinearLayoutManager(activity)
                 recyclerView.setHasFixedSize(true)
-                recyclerView.adapter=adapter
+                recyclerView.adapter=userAdapter
                 swiperefresh.isRefreshing = false
             }
 
         })
     }
-}
+
+    override fun onItemClicked(worker: Worker, position: Int)
+    {
+        val dialog = Dialog(requireActivity(), R.style.dialog)
+        dialog.setContentView(R.layout.dialog_add_contact)
+        val window = dialog.window
+        window?.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
+        dialog.findViewById<Button>(R.id.yes).setOnClickListener {
+
+            val contact=Contact(uid =worker.uid, name = worker.username, description = worker.description)
+            if(contactViewModel.checkUser(contact))
+            {
+                contactViewModel.addContact(contact)
+                Toast.makeText(requireContext(),"Worker added to contact",Toast.LENGTH_LONG).show()
+            }
+            else{
+                Toast.makeText(requireContext(),"Failed to add worker",Toast.LENGTH_LONG).show()
+
+            }
+
+
+        }
+        dialog.show()
+        dialog.findViewById<Button>(R.id.cancel).setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+
+    }
+
 
 class UserItem(val worker: Worker, val context: Context) : Item<ViewHolder>() {
 
@@ -328,13 +371,91 @@ class UserItem(val worker: Worker, val context: Context) : Item<ViewHolder>() {
 
             viewHolder.itemView.user_id.text = worker.username
 
-            viewHolder.itemView.imageview_new_message.setOnClickListener {
+            viewHolder.itemView.imageview_new_message.setOnClickListener{
+                  Toast.makeText(context,worker.toString(),Toast.LENGTH_LONG).show()
 
             }
         }
     }
 
+    fun getItem()
+    {
+
+    }
+
+
+
     override fun getLayout(): Int {
         return R.layout.user_row_new_message
     }
+}
+
+class UserAdapter( private val listener:ClickListener):
+    ListAdapter<Worker, RecyclerView.ViewHolder>(ListItemCallback())
+{
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserAdapter.ViewHolder
+    {
+        val view: View =LayoutInflater.from(parent.context).inflate(R.layout.user_row_new_message,parent,false)
+        return ViewHolder(view)
+
+
+    }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int)
+    {
+        val worker=getItem(position)
+        (holder as ViewHolder).bind(worker,position)
+
+    }
+
+
+   inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    {
+        var tvUsername: TextView?=null
+        var circleImageView:CircleImageView?=null
+
+        init {
+            tvUsername=itemView.findViewById(R.id.username_textview_new_message)
+            circleImageView=itemView.findViewById(R.id.imageview_new_message)
+        }
+        fun bind(worker: Worker,position:Int)
+        {
+            tvUsername?.text=worker?.username
+            Picasso.get().load(worker?.profileImageUrl).fit().into(circleImageView)
+            itemView.setOnClickListener{
+                listener.onItemClicked(worker,position)
+            }
+
+
+        }
+
+
+
+    }
+    class ListItemCallback : DiffUtil.ItemCallback<Worker>() {
+        override fun areItemsTheSame(oldItem: Worker, newItem: Worker): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItem: Worker, newItem: Worker): Boolean {
+            return     oldItem.username==newItem.username
+                    && oldItem.access ==newItem.access
+                    && oldItem.account ==newItem.account
+                    && oldItem.description ==newItem.description
+                    && oldItem.category ==newItem.category
+                    && oldItem.uid ==newItem.uid
+                    && oldItem.lat == newItem.lat
+                    && oldItem.lon == newItem.lon
+                    && oldItem.profileImageUrl == newItem.profileImageUrl
+
+        }
+
+    }
+
+    interface ClickListener {
+        fun onItemClicked(worker: Worker,position: Int)
+    }
+
+
+
 }
