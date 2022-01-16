@@ -8,6 +8,7 @@ import com.example.nearbyworkers.database.Contact
 import com.example.nearbyworkers.database.ContactDao
 import com.example.nearbyworkers.database.ContactDatabase
 import com.example.utils.subscribeOnBackground
+import kotlin.properties.Delegates
 
 class ContactsViewModel(
     var database: ContactDao,
@@ -17,7 +18,7 @@ class ContactsViewModel(
 
     private  val db=ContactDatabase.getInstance(application)
     private val contacts=database.getAllContact()
-
+    private var isChecked=false
 
     fun getAllContacts(): LiveData<List<Contact>>
     {
@@ -44,12 +45,24 @@ class ContactsViewModel(
 
     fun checkUser(contact:Contact):Boolean
     {
-        var check=false
 
-        subscribeOnBackground {
-            check=database.checkContact(contact.uid)
+
+       subscribeOnBackground {
+           this.isChecked=database.checkContact(contact.uid).isEmpty()
         }
-        return check
+
+
+
+
+
+      /*  subscribeOnBackground {
+            if(database.checkContact(contact.uid).isEmpty())
+            {
+              return@subscribeOnBackground
+            }
+        }*/
+
+        return isChecked
     }
 
 

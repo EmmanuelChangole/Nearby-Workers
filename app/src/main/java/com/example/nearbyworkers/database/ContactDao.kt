@@ -21,8 +21,8 @@ interface ContactDao
     @Query("select * from contact_database order by id desc")
     fun getAllContact(): LiveData<List<Contact>>
 
-    @Query("SELECT EXISTS(SELECT * FROM contact_database WHERE uid=(:uid))")
-    fun checkContact(uid:String): Boolean
+    @Query("SELECT * FROM contact_database WHERE uid LIKE :uid")
+    fun checkContact(uid:String): List<Contact>
 
 
 }
