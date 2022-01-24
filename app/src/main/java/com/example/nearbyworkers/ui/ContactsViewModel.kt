@@ -4,10 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.nearbyworkers.database.Contact
 import com.example.nearbyworkers.database.ContactDao
 import com.example.nearbyworkers.database.ContactDatabase
 import com.example.utils.subscribeOnBackground
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 class ContactsViewModel(
@@ -45,12 +49,16 @@ class ContactsViewModel(
 
     fun checkUser(contact:Contact):Boolean
     {
+        var checked=false;
+       viewModelScope.launch (Dispatchers.IO)
+       {
+          checked=database.checkContact(contact.uid).isEmpty()
+       }
 
-
-       subscribeOnBackground {
+      /* subscribeOnBackground {
            this.isChecked=database.checkContact(contact.uid).isEmpty()
         }
-
+*/
 
 
 
@@ -62,7 +70,7 @@ class ContactsViewModel(
             }
         }*/
 
-        return isChecked
+        return checked
     }
 
 
