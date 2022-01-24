@@ -333,16 +333,8 @@ class LocationFragment : Fragment(),UserAdapter.ClickListener {
         dialog.findViewById<Button>(R.id.yes).setOnClickListener {
 
             val contact=Contact(uid =worker.uid, name = worker.username, description = worker.description)
-            if(contactViewModel.checkUser(contact))
-            {
-                contactViewModel.addContact(contact)
-                Toast.makeText(requireContext(),"Worker added to contact",Toast.LENGTH_LONG).show()
-            }
-            else{
-                Toast.makeText(requireContext(),"Failed to add worker",Toast.LENGTH_LONG).show()
-
-            }
-
+            contactViewModel.addContact(contact)
+            dialog.dismiss()
 
         }
         dialog.show()

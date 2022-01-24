@@ -17,6 +17,7 @@ class ClientActivity : AppCompatActivity() {
         binding= ActivityClientBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initWidgets()
+        setUpFragment(ContactsFragment())
 
     }
 
