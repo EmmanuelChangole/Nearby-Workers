@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -58,6 +59,8 @@ class LocationFragment : Fragment(),UserAdapter.ClickListener {
     lateinit var itemListener:UserAdapter.ClickListener
     private  var worker:ArrayList<Worker> = ArrayList()
     private lateinit var userAdapter:UserAdapter
+    private lateinit var imgArrowBack:ImageView
+    private lateinit var tvName:TextView
 
     companion object {
         fun newInstance() = LocationFragment()
@@ -70,6 +73,8 @@ class LocationFragment : Fragment(),UserAdapter.ClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding= LocationFragmentBinding.inflate(inflater)
+        imgArrowBack=binding.imgArrowBack
+        tvName=binding.tvName
         return binding.root
 
         //return inflater.inflate(R.layout.location_fragment, container, false)
@@ -77,7 +82,13 @@ class LocationFragment : Fragment(),UserAdapter.ClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        imgArrowBack.setOnClickListener{
+            (activity as ClientActivity).setUpFragment(ContactsFragment())
+        }
+
         viewModel = ViewModelProvider(this).get(LocationViewModel::class.java)
+
 
         if(ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -114,6 +125,7 @@ class LocationFragment : Fragment(),UserAdapter.ClickListener {
         contactViewModel=ViewModelProvider(this,viewModelFactory).get(ContactsViewModel::class.java)
         itemListener=this
          swiperefresh.setOnRefreshListener {
+             tvName.visibility=View.GONE
             fetchUsers()
          }
     }
@@ -227,6 +239,7 @@ class LocationFragment : Fragment(),UserAdapter.ClickListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val adapter = GroupAdapter<ViewHolder>()
+                worker.clear()
 
                 dataSnapshot.children.forEach {
                     Log.d(TAG, it.toString())
@@ -242,7 +255,7 @@ class LocationFragment : Fragment(),UserAdapter.ClickListener {
                                 //here compare the distance, load the user in range
                                 if (dis < 5.0)
                                 {
-                                 worker.clear()
+
                                  worker.add(it)
                                   //  adapter.add(UserItem(it, requireActivity()))
                                 }
@@ -251,6 +264,13 @@ class LocationFragment : Fragment(),UserAdapter.ClickListener {
 
 
                     }
+                }
+
+                if(worker.isEmpty())
+                {
+                    tvName.visibility=View.VISIBLE
+                    tvName.setText("Could not find nearby workers")
+
                 }
                 // use a dialog to add user to contact
 
@@ -278,36 +298,6 @@ class LocationFragment : Fragment(),UserAdapter.ClickListener {
 
                         }
 
-
-
-
-                     /*   var users : ArrayList<String>? = ArrayList()
-                        val dbRef = FirebaseDatabase.getInstance().getReference("users/${FirebaseAuth.getInstance().currentUser?.uid}")
-                        val contacts = dbRef.child("contacts")
-                        contacts.addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onCancelled(p0: DatabaseError) {
-                            }
-                            override fun onDataChange(p0: DataSnapshot) {
-                                users = p0.value as? ArrayList<String>
-                                var user = (item as? UserItem)?.worker!!.uid
-                                val contact=Contact(us)
-
-
-
-
-                                Toast.makeText(requireContext(),user.toString(),Toast.LENGTH_LONG).show()
-                                // in case duplicate adding
-                              *//*  if (users!!.contains(user)){
-                                    Toast.makeText(requireActivity(),"Already in your contacts",
-                                        Toast.LENGTH_SHORT).show()
-                                }
-                                else if (!users!!.contains(user)){
-                                    users!!.add(user)
-                                    Toast.makeText(requireActivity(),"Add successful", Toast.LENGTH_SHORT).show()
-                                }
-                                contacts.setValue(users)*//*
-                            }
-                        })*/
                     }
                     dialog.show()
                     dialog.findViewById<Button>(R.id.cancel).setOnClickListener {
@@ -354,8 +344,6 @@ class UserItem(val worker: Worker, val context: Context) : Item<ViewHolder>() {
 
         if (!worker.profileImageUrl!!.isEmpty()) {
             val requestOptions = RequestOptions().placeholder(R.drawable.ic_user)
-
-
             Glide.with(viewHolder.itemView.imageview_new_message.context)
                 .load(worker.profileImageUrl)
                 .apply(requestOptions)
@@ -370,10 +358,6 @@ class UserItem(val worker: Worker, val context: Context) : Item<ViewHolder>() {
         }
     }
 
-    fun getItem()
-    {
-
-    }
 
 
 
@@ -413,7 +397,11 @@ class UserAdapter( private val listener:ClickListener):
         fun bind(worker: Worker,position:Int)
         {
             tvUsername?.text=worker?.username
-            Picasso.get().load(worker?.profileImageUrl).fit().into(circleImageView)
+            if(!worker?.profileImageUrl.contentEquals("default"))
+            {
+                Picasso.get().load(worker?.profileImageUrl).placeholder(R.drawable.ic_user).fit().into(circleImageView)
+            }
+
             itemView.setOnClickListener{
                 listener.onItemClicked(worker,position)
             }
