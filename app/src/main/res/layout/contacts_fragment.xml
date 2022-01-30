@@ -8,8 +8,53 @@
  <RelativeLayout
      android:layout_width="match_parent"
      android:layout_height="match_parent">
+     <com.google.android.material.appbar.MaterialToolbar
+         android:id="@+id/clientToolbar"
+         android:background="@color/teal_200"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         >
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+             <ImageView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:src="@drawable/ic_menu"
+
+                 />
+
+             <ImageView
+                 android:id="@+id/imgAdd"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:src="@drawable/ic_add"
+                 android:layout_alignParentRight="true"
+                 android:layout_marginRight="10dp"
+
+                 />
+
+
+
+         </RelativeLayout>
+
+
+     </com.google.android.material.appbar.MaterialToolbar>
+
+     <TextView
+         android:layout_below="@id/clientToolbar"
+         android:layout_marginTop="10dp"
+         android:layout_centerHorizontal="true"
+         android:id="@+id/tvName"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textSize="18dp"
+         android:text="Your contact list is empty, please add"
+         />
+
 
      <androidx.recyclerview.widget.RecyclerView
+         android:layout_below="@id/tvName"
          android:id="@+id/contactRecycler"
          android:layout_width="match_parent"
          android:layout_height="match_parent"/>

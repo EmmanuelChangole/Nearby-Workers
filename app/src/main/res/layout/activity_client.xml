@@ -6,43 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.ClientActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/clientToolbar"
-        android:background="@color/teal_200"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu"
-
-                />
-
-            <ImageView
-                android:id="@+id/imgAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_add"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-
-                />
-
-
-
-        </RelativeLayout>
-
-
-    </com.google.android.material.appbar.MaterialToolbar>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/clientToolbar"
         >
 
         <FrameLayout

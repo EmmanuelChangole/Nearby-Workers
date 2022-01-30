@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nearbyworkers.R
@@ -18,6 +20,8 @@ class ContactsFragment : Fragment() {
     private lateinit var contactViewModel:ContactsViewModel
     private lateinit var binding: ContactsFragmentBinding
     private lateinit var contactRecycler:RecyclerView
+    private lateinit var imgAdd: ImageView
+    private lateinit var tvName:TextView
 
     companion object {
         fun newInstance() = ContactsFragment()
@@ -37,12 +41,18 @@ class ContactsFragment : Fragment() {
         val viewModelFactory=ContactsViewModelFactory(contactDataSource,application)
         contactViewModel=ViewModelProvider(this,viewModelFactory).get(ContactsViewModel::class.java)
         contactRecycler=binding.contactRecycler
+        imgAdd=binding.imgAdd
+        tvName=binding.tvName
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ContactsViewModel::class.java)
+        imgAdd.setOnClickListener{
+            (activity as ClientActivity).setUpFragment(LocationFragment())
+        }
+
         var recyclerViewAdapter=ContactViewAdapter()
         contactRecycler.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -53,7 +63,12 @@ class ContactsFragment : Fragment() {
         contactViewModel.getAllContacts().observe(viewLifecycleOwner,{
             if(it.isEmpty())
             {
+                tvName.visibility=View.VISIBLE
 
+            }
+            else
+            {
+                tvName.visibility=View.GONE
             }
 
           recyclerViewAdapter.submitList(it)
@@ -63,6 +78,8 @@ class ContactsFragment : Fragment() {
 
         // TODO: Use the ViewModel
     }
+
+
 
 
 
