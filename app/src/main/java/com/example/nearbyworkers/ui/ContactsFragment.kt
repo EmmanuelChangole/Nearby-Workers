@@ -8,15 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nearbyworkers.R
+import com.example.nearbyworkers.database.Contact
 import com.example.nearbyworkers.database.ContactDatabase
 import com.example.nearbyworkers.database.ContactViewAdapter
+import com.example.nearbyworkers.database.OnItemClick
 import com.example.nearbyworkers.databinding.ContactsFragmentBinding
 import com.example.nearbyworkers.databinding.SignupFragmentBinding
 
-class ContactsFragment : Fragment() {
+class ContactsFragment : Fragment(),OnItemClick {
     private lateinit var contactViewModel:ContactsViewModel
     private lateinit var binding: ContactsFragmentBinding
     private lateinit var contactRecycler:RecyclerView
@@ -53,7 +56,7 @@ class ContactsFragment : Fragment() {
             (activity as ClientActivity).setUpFragment(LocationFragment())
         }
 
-        var recyclerViewAdapter=ContactViewAdapter()
+        var recyclerViewAdapter=ContactViewAdapter(this)
         contactRecycler.apply {
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
@@ -74,14 +77,15 @@ class ContactsFragment : Fragment() {
           recyclerViewAdapter.submitList(it)
         })
 
-
-
         // TODO: Use the ViewModel
     }
 
+    override fun ItemClick(currentItem: Contact)
+    {
+        Toast.makeText(requireContext(),currentItem.name,Toast.LENGTH_LONG).show()
 
 
-
+    }
 
 
 }
